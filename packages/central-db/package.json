@@ -1,7 +1,8 @@
 {
-  "name": "central-db",
+  "name": "@metaverse-central-db",
   "version": "1.0.0",
   "description": "",
+"type": "module",
   "main": "index.js",
   "scripts": {
     "prebuild": "pnpx prisma generate",
