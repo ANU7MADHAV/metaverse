@@ -7,7 +7,16 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   create(data: User) {
-    this.prisma.user.create({ data });
+    const checkUserExist = this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+    if (checkUserExist) {
+      return 'Already exist';
+    }
+    const createUser = this.prisma.user.create({ data });
+    return createUser;
   }
 
   findAll() {
