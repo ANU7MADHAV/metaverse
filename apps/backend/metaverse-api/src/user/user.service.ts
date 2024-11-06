@@ -6,12 +6,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: User) {
-    const checkUserExist = this.prisma.user.findUnique({
+  async create(data: User) {
+    console.log('email', data.email);
+    const checkUserExist = await this.prisma.user.findUnique({
       where: {
         email: data.email,
       },
     });
+
     if (checkUserExist) {
       return 'Already exist';
     }
