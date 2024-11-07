@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -21,7 +21,19 @@ export class UserService {
     return createUser;
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll() {
+    return await this.prisma.user.findMany();
+  }
+
+  async findOne(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      throw new UnauthorizedException('User does not exist');
+    }
+    return user;
   }
 }
