@@ -10,6 +10,7 @@ export class AuthService {
   ) {}
 
   async signIn(username: string, pass: string): Promise<any> {
+    console.log('username', username);
     const user = await this.userService.findOne(username);
     if (user?.password !== pass) {
       throw new UnauthorizedException('Invalid credentials');
@@ -17,7 +18,7 @@ export class AuthService {
     const payload = { sub: user.id, username: user.email };
 
     return {
-      access_token: this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }
