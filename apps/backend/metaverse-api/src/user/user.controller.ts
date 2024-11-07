@@ -1,4 +1,11 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 import { UserService } from './user.service';
 
@@ -7,14 +14,19 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async findAll(): Promise<User[]> {
-    return this.userService.findAll();
+    return await this.userService.findAll();
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findOne(@Body() data: string): Promise<User | string> {
+    return await this.userService.findOne(data);
   }
   @Post()
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async create(@Body() data: User): Promise<User | string> {
-    console.log('hitted');
-    return this.userService.create(data);
+    return await this.userService.create(data);
   }
 }
